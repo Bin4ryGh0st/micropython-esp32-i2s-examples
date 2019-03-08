@@ -135,7 +135,7 @@ Write audio samples to I2S peripheral with the given arguments:
     
 Notes:  
   * method blocks until buf is *completely* copied to DMA memory, unless timeout is specified 
-  * The DMA engine works in the background, transfering audio sample from DMA buffers to the I2S peripheral.  The MicroPython runtime is not impacted by this DMA operation.
+  * The DMA engine works in the background, transfering audio samples from DMA buffers to the I2S peripheral.  The MicroPython runtime is not impacted by this DMA operation.
 
 **Returns** number of bytes written      type
 ***
@@ -291,7 +291,10 @@ Note: imports sdcard.py.  Copy sdcard.py into filesystem from micropython/driver
 MicroPython code:
   * read-mono-mic-write-internal-flash.py
 
-Note:  Compared to example 3, this implementation uses 1/4 the DMA memory and does not require a prune() function.  Credit:  @MikeShi42 
+Notes:  
+  * Compared to example 3, this implementation uses 1/4 the DMA memory and does not require a prune() function.  Credit:  @MikeShi42 
+  * The `ampy` tool has a bug that prevents binary files from being downloaded from the filesystem.  See issue:
+  https://github.com/pycampers/ampy/issues/45.
 
 #### 5. Record 32 bit audio to SDCard WAV file using Adafruit I2S MEMS Microphone Breakout - SPH0645LM4H
 MicroPython code:
@@ -300,6 +303,12 @@ MicroPython code:
 Notes: 
   * imports sdcard.py.  Copy sdcard.py into filesystem from micropython/drivers/sdcard folder
   * uses efficient DMA configuration.  Credit:  @MikeShi42 
+
+### Building a psRAM version of MicroPython
+To use ESP32 development boards supporting external psRAM memory (e.g.  Lolin D32 Pro with 4MB of psRAM) you will need to change the MicroPython build environment as follows:
+  * include make variable `SDKCONFIG = boards/sdkconfig.spiram` in the command line call for make.  For example, `make deploy SDKCONFIG = boards/sdkconfig.spiram`
+  
+after this change perform a one-time `make clean` and then build
 
 ### Testing Setup
 
